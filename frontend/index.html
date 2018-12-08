@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Custom Risk Type</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    </head>
+    <body>
+
+    <!-- application -->
+        <div id="app" class="container">
+
+            <div class="row align-items-center">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+
+                        <h1>
+                            <a href="/" class="nav-link">Custom Risk Types</a>
+                        </h1>
+
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <router-link :to="{name: 'home'}" class="nav-link">Risks</router-link>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <div v-show="message" class="alert alert-info mt-3 mb-1" role="alert">
+                        {% verbatim %} {{ message }} {% endverbatim %}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>                    
+
+                    <router-view></router-view>
+                </div>
+            </div>
+
+        </div>
+    <!-- application -->
+
+    <!-- templates -->
+        <template id="risk-list" :items="items">
+            <div class="p-2">
+                <div class="mt-2 mb-2">
+                    <h2>Risk Type List</h2>
+
+                    <router-link
+                        :to="{name: 'risk-type-form'}"
+                        class="btn btn-info btn-sm mt-2"
+                        role="button"
+                        aria-pressed="true"
+                    >+ Risk Type</router-link>
+                </div>
+                
+                <table v-if="items.length > 0" class="table">
+                    <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>Risk</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="(item, index) in items"
+                            :key="item.uuid"                                
+                        >
+                            <td>
+                                 {% verbatim %} {{ index + 1 }} {% endverbatim %}
+                            </td>
+                            <td>
+                                <router-link :to="{name: 'insurance-form', params: {uuid: item.uuid}} ">
+                                    {% verbatim %} {{ item.name }} {% endverbatim %}                                    
+                                </router-link>
+                            </td>
+                            <td>
+                                <router-link class="buttom btn btn-light" :to="{name: 'insurance-form', params: {uuid: item.uuid}} ">
+                                    Risk form
+                                </router-link>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+               <div v-else class="alert alert-secondary p-2" role="alert">
+                    <p class="mb-0">No risk types</p>
+                </div>
+            </div>
+        </template>
+
+        <template id="risk-type-insurance-form">
+            <div class="p-2">
+                <h2 class="mt-3 ">Create {% verbatim %} {{ risk.name }} {% endverbatim %} Insurance </h2>
+
+                <form @submit.prevent="createRiskTypeInsurance">
+                    <div
+                        v-for="field in risk.fields"
+                        :key="field.uuid"
+                        class="form-group"
+                    >
+                        <label>
+                            {% verbatim %} {{field.label}} {% endverbatim %}
+                        </label>
+                        <select 
+                            v-if="field.field_type == 'enum'" 
+                            v-model="formData[field.name]" 
+                            class="form-control" 
+                            required
+                        >
+                            <option v-for="choice in field.choices" :value="choice.value">{% verbatim %} {{choice.value}} {% endverbatim %}</option>
+                        </select>
+                        <input 
+                            v-else-if="field.field_type == 'number'" 
+                            type="number" 
+                            v-model="formData[field.name]" 
+                            class="form-control" 
+                            required
+                        >
+                        <input 
+                            v-else-if="field.field_type == 'date'" 
+                            type="date" 
+                            v-model="formData[field.name]" 
+                            class="form-control" 
+                            required
+                        >
+                        <input 
+                            v-else 
+                            type="text" 
+                            v-model="formData[field.name]"
+                            class="form-control" 
+                            required
+                        >
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
+            </div>
+        </template>
+
+        <template id="choice-form">
+            <div class="modal" tabindex="-1" role="dialog" id="choice-modal-form">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Create options</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body"> 
+                            <form>                                       
+                                <div 
+                                    class="form-group"
+                                    v-for="(field, index) in fields"                        
+                                >
+                                    <div class="form-row">
+                                        <input 
+                                            type="text" 
+                                            v-model="formData[index]" 
+                                            placeholder="Choice" 
+                                            class="form-control col" 
+                                            required
+                                        >
+                                        <div class="col">
+                                            <button @click.prevent="removeField(index)" class="btn btn-danger rounded-circle">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2 mb-2 pb-2">
+                                    <button @click.prevent="addField" class="btn btn-info">+ Field</button>
+                                </div>                                
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">                          
+                            <button type="button" class="btn btn-primary" @click.prevent="save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </template>
+
+        <template id="risk-type-form">
+            <div class="p-2">
+                <h2 class="mt-3">Create a new Risk Type</h2>
+                <form @submit.prevent="createRiskType" action="/api/risk-type/">
+
+                    <input type="text" v-model="formData.name" placeholder="Risk name" class="form-control" required>
+
+                    <div 
+                        v-for="(item, index) in fields"                        
+                        class="form-row mt-2 mb-2"
+                    >
+                        <div class="col">
+                            <input 
+                                type="text" 
+                                v-model="formData['fieldName' + index]" 
+                                placeholder="Field name" 
+                                class="form-control" 
+                                @keyup.prevent="copyToLabel($event, index)" 
+                                required
+                            >
+                        </div>
+                        <div class="col">
+                            <input 
+                                :ref="'fieldLabel' + index"
+                                type="text" 
+                                v-model="formData['fieldLabel' + index]" 
+                                placeholder="Field label" 
+                                class="form-control" 
+                                required
+                            >
+                        </div>
+                        <div class="col">
+                            <select 
+                                class="form-control" 
+                                v-model="formData['fieldType' + index]" 
+                                required
+                                @change="fieldTypeChanged"
+                            >                                
+                                <option value="text" selected="selected">Text</option>
+                                <option value="number">Number</option>
+                                <option value="date">Date</option>
+                                <option value="enum">Enum</option>
+                            </select>
+                            
+                            <choice-form :field-ref="fields.length - 1"></choice-form>
+                            <span v-for="choice in formData['fieldChoices' + index]" class="badge badge-secondary mr-1">
+                                {% verbatim %} {{choice}} {% endverbatim %}
+                            </span>                               
+                        </div>
+                        <div class="col">
+                            <button @click.prevent="removeField(index)" class="btn btn-danger rounded-circle">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-2 mb-2 pb-2 border-bottom">
+                        <button @click.prevent="addField" class="btn btn-info">+ Field</button>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
+            </div>
+        </template>
+    <!-- templates -->
+
+    <!-- External libs -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- External libs -->
+
+        <script>
+
+            /* Creating a global event bus*/
+            Vue.prototype.$eventBus = new Vue();
+
+            /* Defining a list item component */
+            let RiskList = Vue.component('risk-list', {
+                template: '#risk-list',
+                data() {
+                    return {
+                        items: []
+                    }
+                },
+                methods:{
+                    getRiskTypes()
+                    {
+                        let vm = this,
+                        endpoint = '/api/risk-type/';
+
+                        axios.get(endpoint)
+                            .then(function (response) {
+                                vm.items = response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                },
+                mounted() {
+                   this.getRiskTypes();
+                }
+            });
+
+            let ChoicesForm = Vue.component('choice-form', {
+                template: '#choice-form',
+                props: ['fieldRef'],
+                data() {
+                    return {
+                        formData: {},
+                        fields: [{}]
+                    }
+                },
+
+                methods: {
+                    addField()
+                    {
+                        this.fields.push({});
+                    },
+
+                    removeField(i)
+                    {
+                        delete this.formData[i];
+                        delete this.formData[i];
+                        delete this.formData[i];
+                        this.fields.splice(i, 1);
+                    },
+
+                    save()
+                    {
+                        let choices = [];
+                        for(let attr in this.formData)
+                            choices.push(this.formData[attr]);
+                        this.$eventBus.$emit('choices-save', {field: this.fieldRef, choices: choices});
+                        console.log(this.fieldRef);
+                        this.formData = {};
+                    }
+                }
+            });
+
+            let RiskTypeForm = Vue.component('risk-type-form', {
+                template: '#risk-type-form',
+                data() {
+                    return {
+                        formData: {},
+                        fields: [{}]
+                    }
+                },
+                created()
+                {
+                    this.$eventBus.$on('choices-save', (params) => {
+                        let attr = 'fieldChoices' + params.field;
+                        Vue.set(this.formData, attr, params.choices);
+                        console.log(this.formData);
+                        console.log(attr);
+                        $('#choice-modal-form').modal('toggle');
+                    })
+                },
+                methods: {
+                    addField()
+                    {
+                        this.fields.push({});                        
+                    },
+                    removeField(i)
+                    {
+                        delete this.formData['fieldName' + i];
+                        delete this.formData['fieldLabel' + i];
+                        delete this.formData['fieldType' + i];
+
+                        this.fields.splice(i, 1);
+                    },
+                    fieldTypeChanged(event)
+                    {
+                        if(event.target.value == 'enum')
+                            $('#choice-modal-form').modal();
+                    },
+                    copyToLabel(event, index)
+                    {
+                        let value = event.target.value,
+                            attr = 'fieldLabel' + index,
+                            capitalized = value.charAt(0).toUpperCase() + value.slice(1);;
+                       
+                        Vue.set(this.formData, attr, capitalized);
+                    },
+                    createRiskType(event)
+                    {
+                        let vm = this,
+                            data = {
+                                name: this.formData.name,
+                                fields: this.fields.map((item, index) => {
+                                    return {
+                                        name: this.formData['fieldName' + index],
+                                        label: this.formData['fieldLabel' + index],
+                                        field_type: this.formData['fieldType' + index],
+                                        choices: this.formData['fieldChoices' + index].map((choice) =>{
+                                            return {value: choice};
+                                        })
+                                    }
+                                    
+                                })
+                            },
+                            headers = {'Content-Type': 'application/json'},
+                            payload = JSON.stringify(data);
+
+                        axios.post(event.target.action, payload, {headers})
+                            .then(function (response) {
+                                let message = 'Risk type was ' + response.data.name + ' created.';
+                                vm.$router.push({name: 'home'});
+                                vm.$eventBus.$emit('show-message', message);
+                                vm.formData = {};                                
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                }
+            });
+
+            let InsuranceForm = Vue.component('risk-type-insurance-form', {
+                props: ['risktype'],
+                template: '#risk-type-insurance-form',
+                data() {
+                    return {
+                        risk: {},
+                        formData: {}
+                    }
+                },
+
+                methods: {
+                    getRiskType(endpoint)
+                    {
+                        let vm = this;
+
+                        axios.get(endpoint)
+                            .then(function (response) {
+                                vm.risk = response.data;
+                                vm.risk.endpoint = endpoint;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                
+                    createRiskTypeInsurance()
+                    {
+                        let vm = this,
+                            data = {
+                                risk_type: this.risk.uuid,
+                                values: this.risk.fields.map((field) => {
+                                    return {
+                                        name: vm.formData[field.name],
+                                        field: field.uuid
+                                    };
+                                })
+                            },
+                            headers = {'Content-Type': 'application/json'},
+                            payload = JSON.stringify(data);
+
+                        axios.post(this.risk.endpoint, payload, {headers})
+                            .then(function (response) {
+                                let message = vm.risk.name + ' insurance was created.';
+                                vm.$router.push({name: 'home'});
+                                vm.$eventBus.$emit('show-message', message);
+                                vm.formData = {};                                
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                },
+
+                created() {
+                    console.log(this.$route.params.uuid);
+                    this.getRiskType('/api/risk-type/' + this.$route.params.uuid);
+                }
+            });
+
+
+            let router = new VueRouter({
+                mode: 'history',
+                routes: [
+                    {path: '/', name: 'home', component: RiskList},
+                    {path: '/risk-type-create', name: 'risk-type-form', component: RiskTypeForm},
+                    {path: '/insurance-create/:uuid', name: 'insurance-form', component: InsuranceForm}
+                ]
+            });
+
+            let app = new Vue({
+                el: '#app',
+                router,
+                data: {
+                    message: null
+                },               
+
+                created() {
+                    this.$eventBus.$on('show-message', (message) => {
+                        this.message = message;
+                        setTimeout(() => {
+                            this.message = null;
+                        }, 5000);
+                    });                    
+                }
+            });
+        </script>
+    </body>
+</html>
