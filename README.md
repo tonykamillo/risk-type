@@ -1,2 +1,2 @@
 # Custom Risk Type
-Approach to allow customers customize their own insurance risk types.
+Approach to allow insurers customize their own insurance risk types.
