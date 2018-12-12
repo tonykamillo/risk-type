@@ -14,12 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.contrib import admin
+from django.conf import settings
+# from django.contrib import admin
 from django.conf.urls import url, include
 from django.views.generic.base import TemplateView
 
+prefix = settings.ENDPOINT_PREFIX
+
+
+class IndexPage(TemplateView):
+
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexPage, self).get_context_data(**kwargs)
+        context['prefix'] = prefix
+        return context
+
+
 urlpatterns = [
-    url('admin/', admin.site.urls),
-    url('api/', include('custom_risk_type.urls')),
-    url('', TemplateView.as_view(template_name='index.html'))
+    # url('%sadmin/' % prefix, admin.site.urls),
+    url('%sapi/' % prefix, include('custom_risk_type.urls')),
+    url('%s' % prefix, IndexPage.as_view(), name='home')
 ]

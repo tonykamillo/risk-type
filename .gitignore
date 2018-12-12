@@ -4,4 +4,5 @@ __pycache__/
 \.coverage
 htmlcov
 *template*.json
-
+venv
+zappa_settings.json

@@ -25,7 +25,11 @@ SECRET_KEY = 'o5(mqca7dq!tw(w7_pz07fa=cr8svoq2x9on^+9rzy@528c5mb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '.amazonaws.com'
+]
 
 
 # Application definition
@@ -123,3 +127,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+ENDPOINT_PREFIX = ''
+
+if os.environ.get('STAGE') == 'dev':
+    ENDPOINT_PREFIX = 'dev/'
+
+elif os.environ.get('STAGE') == 'production':
+    DEBUG = False
+    ALLOWED_HOSTS = [
+        '.amazonaws.com'
+    ]
