@@ -3,7 +3,7 @@
         "aws_region": "ap-south-1",
         "django_settings": "britecore.settings",
         "profile_name": "lambda-deploy",
-        "project_name": "britecore",
+        "project_name": "risktype",
         "runtime": "python2.7",
         "s3_bucket": "risktype-lambda"
     }
