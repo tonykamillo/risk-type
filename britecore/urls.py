@@ -34,6 +34,6 @@ class IndexPage(TemplateView):
 
 urlpatterns = [
     # url('%sadmin/' % prefix, admin.site.urls),
-    url('%sapi/' % prefix, include('custom_risk_type.urls')),
-    url('%s' % prefix, IndexPage.as_view(), name='home')
+    url('api/', include('custom_risk_type.urls')),
+    url('', IndexPage.as_view(), name='home')
 ]
