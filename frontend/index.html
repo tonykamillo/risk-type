@@ -174,7 +174,7 @@
         <template id="risk-type-form">
             <div class="p-2">
                 <h2 class="mt-3">Create a new Risk Type</h2>
-                <form @submit.prevent="createRiskType" action="/{{prefix}}api/risk-type/">
+                <form @submit.prevent="createRiskType" action="{{vroot}}api/risk-type/">
 
                     <input type="text" v-model="formData.name" placeholder="Risk name" class="form-control" required>
 
@@ -246,7 +246,7 @@
     <!-- External libs -->
 
         <script>
-            const endpointPrefix = '/{{prefix}}';
+            const vroot = '{{vroot}}'.replace(':', '\:');
 
             /* Creating a global event bus*/
             Vue.prototype.$eventBus = new Vue();
@@ -349,7 +349,7 @@
                 methods:{
                     getRiskTypes() {
                         let vm = this,
-                        endpoint = endpointPrefix + 'api/risk-type/';
+                            endpoint = vroot + 'api/risk-type/';
 
                         vm.$eventBus.$emit('loading', true);
 
@@ -551,7 +551,7 @@
 
                 created(){
                     this.$eventBus.$emit('loading', true);
-                    const endpoint = endpointPrefix + 'api/risk-type/' + this.$route.params.uuid;
+                    const endpoint = vroot + 'api/risk-type/' + this.$route.params.uuid;
                     this.getRiskType(endpoint);
                 }
             });
@@ -559,9 +559,10 @@
             const router = new VueRouter({
                 mode: 'history',
                 routes: [
-                    {path: endpointPrefix, name: 'home', component: RiskList},
-                    {path: endpointPrefix + 'risk-type-create', name: 'risk-type-form', component: RiskTypeForm},
-                    {path: endpointPrefix + 'insurance-create/:uuid', name: 'insurance-form', component: InsuranceForm}
+                    {path: 'risks', name: 'home', component: RiskList},
+                    {path: 'risk-type-create', name: 'risk-type-form', component: RiskTypeForm},
+                    {path: 'insurance-create/:uuid', name: 'insurance-form', component: InsuranceForm},
+                    {path: '*', redirect: {name: 'home'}}
                 ]
             });
 

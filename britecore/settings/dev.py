@@ -13,5 +13,3 @@ DATABASES = {
         'BUCKET': DB_BUCKET
     }
 }
-
-ENDPOINT_PREFIX = 'dev/'

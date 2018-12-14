@@ -19,8 +19,6 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.views.generic.base import TemplateView
 
-prefix = settings.ENDPOINT_PREFIX
-
 
 class IndexPage(TemplateView):
 
@@ -28,7 +26,7 @@ class IndexPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPage, self).get_context_data(**kwargs)
-        context['prefix'] = prefix
+        context['vroot'] = self.request.build_absolute_uri()
         return context
 
 
