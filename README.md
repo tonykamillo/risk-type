@@ -18,10 +18,11 @@ The approach consists in attach generic fields and values in order to define a r
  5. Inside risk-type folder create zappa initial settings `zappa init`
      Zappa wizard will ask you some informations, all of them should be answered.
  6. Into **zappa_settings.json** file add the option `"exclude":["*.sqlite3"]`
- 7. Deploy to AWS Lambda `zappa deploy name_of_the_stage_environment`
-     **IMPORTANT** For this step make sure the aws crendentials placed in your machine has privilegies to manage following AWS Services: lambda, s3, cloud formation and api gateway.
- 8.  Execute `zappa manage name_of_the_stage_environment migrate` (just a doubling check if the database was created)
- 9. Load sample data `zappa manage name_of_the_stage_environment "loaddata custom_risk_type/fixtures/initial_data.json"`
- 10. Go to the address informed by zappa and start to create your own risk types and then create some insurances based on created risk type.
+ 7. Create a bucket for sqlite3 database `./manage.py createdb_s3bucket --settings britecore.settings.name_of_the_stage_environment`
+    **IMPORTANT** For this step and the next is required make sure the aws crendentials, placed in your machine, has privilegies to manage following AWS Services: lambda, s3, cloud formation and api gateway.
+ 8. Deploy to AWS Lambda `zappa deploy name_of_the_stage_environment`
+ 9.  Execute `zappa manage name_of_the_stage_environment migrate` (just a doubling check if the database was created)
+ 10. Load sample data `zappa manage name_of_the_stage_environment "loaddata custom_risk_type/fixtures/initial_data.json"`
+ 11. Go to the address informed by zappa and start to create your own risk types, and then, create some insurances based on created risk type.
 
 
