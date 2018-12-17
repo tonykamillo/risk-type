@@ -4,7 +4,7 @@ Proposal to allow insurers create their own risk types.
 The approach consists in attach generic fields and values in order to define a risk, it's seems like a metadata tagging. There are three main models, one that holds the risk type itself and anothers two models hold field/value pair that going to be related to a risk type. For more details check it out the erd.png file.
 
 # Data model
-![ER diagram](https://photos.google.com/share/AF1QipOwqnSJHpP_AliSDvHCy1f9Mkl2D2J0EaFYttnp45GwTN5JEfRcA3z_ncCOwuMfjw/photo/AF1QipMW5eCzAutEqphL8n9dcJeb7181LdAoa90uGoZt?key=amROV3ZPTFlVUHFhUFBadF9NbnlqcDZ3SElZQUd3)
+![ER diagram](https://drive.google.com/file/d/1IC7brOeUXLziyd_1rcJ1fwdofK3Knz79/view?usp=sharing)
 
 # Deployment with zappa
 
