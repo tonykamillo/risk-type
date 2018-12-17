@@ -10,7 +10,9 @@ The approach consists in attach generic fields and values in order to define a r
 
  1. Clone this repo  `git clone git@github.com:tonykamillo/risk-type.git`
  2. Create a virtualenv (assuming that you have a virtualenv installation in your machine)
+ 
      `virtualenv venv -p python2`
+     
     It can be created inside risk-type folder. Python 2 intepreter was choosen because zappa only supports  2.7 to 3.6 versions. After development I had to create another virtualenv, because the default python instalation version in my machine is 3.7.
 
  3. Activate the environment `source venv/bin/activate`
