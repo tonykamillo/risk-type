@@ -1,6 +1,7 @@
 # Custom Risk Type
 
 Proposal to allow insurers create their own risk types.
+
 The approach consists in attach generic fields and values in order to define a risk, it's seems like a metadata tagging. There are three main models, one that holds the risk type itself and anothers two models hold field/value pair that going to be related to a risk type. For more details check it out the erd.png file.
 
 # Data model
