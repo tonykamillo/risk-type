@@ -8,7 +8,7 @@ The approach consists in attach generic fields and values in order to define a r
 
 # Deployment with zappa
 
- 1. Clone this repo  `clone git@github.com:tonykamillo/risk-type.git`
+ 1. Clone this repo  `git clone git@github.com:tonykamillo/risk-type.git`
  2. Create a virtualenv (assuming that you have a virtualenv installation in your machine)
      `virtualenv venv -p python2`
     It can be created inside risk-type folder. Python 2 intepreter was choosen because zappa only supports  2.7 to 3.6 versions.
@@ -19,6 +19,7 @@ The approach consists in attach generic fields and values in order to define a r
      Zappa wizard will ask you some informations, all of them should be answered.
  6. Into **zappa_settings.json** file add the option `"exclude":["*.sqlite3"]`
  7. Create a bucket for sqlite3 database `./manage.py createdb_s3bucket --settings britecore.settings.name_of_the_stage_environment`.
+
     **IMPORTANT** For this step and the next is required make sure the aws crendentials, placed in your machine, has privilegies to manage following AWS Services: lambda, s3, cloud formation and api gateway.
  8. Deploy to AWS Lambda `zappa deploy name_of_the_stage_environment`
  9.  Execute `zappa manage name_of_the_stage_environment migrate` (just a doubling check if the database was created)
