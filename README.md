@@ -4,7 +4,7 @@ Proposal to allow insurers create their own risk types.
 The approach consists in attach generic fields and values in order to define a risk, it's seems like a metadata tagging. There are three main models, one that holds the risk type itself and anothers two models hold field/value pair that going to be related to a risk type. For more details check it out the erd.png file.
 
 # Data model
-![ER diagram](http://farm5.staticflickr.com/4808/46305660922_4877d2c8e2_b.jpg)
+![ER diagram](https://raw.githubusercontent.com/tonykamillo/risk-type/master/erd.png)
 
 # Deployment with zappa
 
@@ -20,7 +20,7 @@ The approach consists in attach generic fields and values in order to define a r
  6. Into **zappa_settings.json** file add the option `"exclude":["*.sqlite3"]`
  7. Create a bucket for sqlite3 database `./manage.py createdb_s3bucket --settings britecore.settings.name_of_the_stage_environment`.
 
-    **IMPORTANT** For this step and the next one is required make sure the aws crendentials, placed in your machine, has privilegies to manage following AWS Services: lambda, s3, cloud formation and api gateway.
+    **IMPORTANT** For this step and the next ones is required make sure the aws crendentials, placed in your machine, has privilegies to manage following AWS Services: lambda, s3, cloud formation and api gateway.
  8. Deploy to AWS Lambda `zappa deploy name_of_the_stage_environment`
  9.  Execute `zappa manage name_of_the_stage_environment migrate` (just a doubling check if the database was created)
  10. Load sample data `zappa manage name_of_the_stage_environment "loaddata custom_risk_type/fixtures/initial_data.json"`
