@@ -1,7 +1,7 @@
-from django.urls import path
+from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('risk-type/<uuid:pk>', views.InsuranceViewSet.as_view(), name='insurance'),
-    path('risk-type/', views.RiskTypeViewSet.as_view(), name='risk-type')
+    url('risk-type/(?P<pk>[\w\-]+)', views.InsuranceViewSet.as_view(), name='insurance'),
+    url('risk-type/', views.RiskTypeViewSet.as_view(), name='risk-type')
 ]

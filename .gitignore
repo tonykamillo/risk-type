@@ -4,4 +4,7 @@ __pycache__/
 \.coverage
 htmlcov
 *\.sublime\-*
-
+*template*.json
+venv
+zappa_settings.json
+.env
