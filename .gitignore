@@ -3,6 +3,7 @@ __pycache__/
 *\.sqlite3
 \.coverage
 htmlcov
+*\.sublime\-*
 *template*.json
 venv
 zappa_settings.json
