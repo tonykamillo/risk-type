@@ -1,3 +1,4 @@
+import json
 from django.urls import reverse
 from django.test import TestCase
 from . import get_risk_type_data, get_insurance_data
@@ -9,7 +10,7 @@ class RiskTypeTestCase(TestCase):
     def make_risk_type_post(self):
         return self.client.post(
             reverse('risk-type'),
-            get_risk_type_data(),
+            json.dumps(get_risk_type_data()),
             content_type='application/json'
         )
 
@@ -17,6 +18,8 @@ class RiskTypeTestCase(TestCase):
 
         response = self.make_risk_type_post()
         data = response.json()
+        print(response)
+        print(data)
 
         self.assertEqual(response.status_code, 201)
         self.assertIsInstance(data, dict)
@@ -44,7 +47,7 @@ class RiskTypeTestCase(TestCase):
 
         risk_type_data = self.make_risk_type_post().json()
 
-        payload = get_insurance_data(risk_type_data)
+        payload = json.dumps(get_insurance_data(risk_type_data))
 
         response = self.client.post(
             reverse('insurance', kwargs={'pk': risk_type_data.get('uuid')}),

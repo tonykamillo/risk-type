@@ -9,21 +9,21 @@ def get_risk_type_data():
     Get a sample parameter for creating a risk type
     '''
     return {
-        "name": "Fleet",
-        "fields": [
-            {"name": "starts_at", "label": "Starts at", "field_type": "date"},
-            {"name": "expires_at", "label": "Expires at", "field_type": "date"},
-            {"name": "coverage", "label": "Coverage", "field_type": "number"},
-            {"name": "clause", "label": "Clause", "field_type": "text"},
-            {"name": "price", "label": "Price", "field_type": "number"},
+        'name': 'Fleet',
+        'fields': [
+            {'name': 'starts_at', 'label': 'Starts at', 'field_type': 'date'},
+            {'name': 'expires_at', 'label': 'Expires at', 'field_type': 'date'},
+            {'name': 'coverage', 'label': 'Coverage', 'field_type': 'number'},
+            {'name': 'clause', 'label': 'Clause', 'field_type': 'text'},
+            {'name': 'price', 'label': 'Price', 'field_type': 'number'},
             {
-                "name": "fleet_type",
-                "label": "Fleet type",
-                "field_type": "enum",
-                "choices": [
-                    {"value": "Car"},
-                    {"value": "Truck"},
-                    {"value": "Ship"}
+                'name': 'fleet_type',
+                'label': 'Fleet type',
+                'field_type': 'enum',
+                'choices': [
+                    {'value': 'Car'},
+                    {'value': 'Truck'},
+                    {'value': 'Ship'}
                 ]
             }
         ]
