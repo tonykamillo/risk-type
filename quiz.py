@@ -2,9 +2,8 @@ from cryptography.fernet import Fernet
 
 key = 'TluxwB3fV_GWuLkR1_BzGs1Zk90TYAuhNMZP_0q4WyM='
 
-
 # Oh no! The code is going over the edge! What are you going to do?
-message = b'gAAAAABcSGkUFC_G_NKyv1q88vUT5NNCAnRavqUtwZpptyunpgW1-r0gCINmLCQiMVLIWBFRan9XWwzYWiaXMe-8IHeJbDTzySQvhusR2MlWF6hOb5bZ4Uio-LvFu8Iig8MXJfrktvyP8x1ZgE_yFq1-DbBxKD57Fivc49_a4PcPiheMi9Os_P0='
+message = b'gAAAAABcXChc-caxgHjym5p4GTBqe3NsDf6fYFJkPsyyPMAH2-3N9_rdS08zGJPXYlzwfzh22O9GTYyZznjS48R65-00ZJP2Ikahs6ieO-8hqCdn4jg0W3k1Z5AXN_C9DsfzmFq52thfQ6Hj3l8LkjyOl_8dDFjANRJ_uJYVR4ikh0rB3XVv064='
 
 
 def main():
