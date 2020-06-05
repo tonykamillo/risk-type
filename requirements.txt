@@ -10,7 +10,7 @@ chardet==3.0.4
 Click==7.0
 cryptography==2.5
 decorator==4.3.0
-Django==1.11.17
+Django==1.11.29
 django-extensions==2.1.4
 djangorestframework==3.9.0
 docutils==0.14
