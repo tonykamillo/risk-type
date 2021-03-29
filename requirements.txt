@@ -33,7 +33,7 @@ placebo==0.8.2
 prompt-toolkit==1.0.15
 ptyprocess==0.6.0
 pycparser==2.19
-Pygments==2.3.0
+Pygments==2.7.4
 python-dateutil==2.6.1
 python-decouple==3.1
 python-slugify==1.2.4
